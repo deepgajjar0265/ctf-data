@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ghost Protocol</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: rgba(255,255,255,0.05);
+  padding: 40px;
+  border-radius: 15px;
+  width: 350px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  border-radius: 8px;
+  border: none;
+  background: #1e293b;
+  color: white;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 8px;
+  border: none;
+  background: #38bdf8;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #0ea5e9;
+}
+
+#result {
+  margin-top: 20px;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Ghost Protocol</h2>
+  <p>Enter the recovered flag</p>
+
+  <input type="text" id="flagInput" placeholder="FLAG{...}">
+  <button onclick="checkFlag()">Submit</button>
+
+  <div id="result"></div>
+</div>
+
+<script>
+async function checkFlag() {
+  const input = document.getElementById("flagInput").value.trim();
+  const result = document.getElementById("result");
+
+  if (!input) {
+    result.innerHTML = "⚠️ Enter a flag!";
+    return;
+  }
+
+  try {
+    const res = await fetch("/check", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ flag: input })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      result.innerHTML = "🎉 Congratulations! Flag is correct!";
+      result.style.color = "#22c55e";
+    } else {
+      result.innerHTML = "❌ Incorrect flag";
+      result.style.color = "#ef4444";
+    }
+
+  } catch (err) {
+    result.innerHTML = "⚠️ Server error. Is backend running?";
+    result.style.color = "orange";
+  }
+}
+</script>
+
+</body>
+</html>
