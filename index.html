@@ -22,7 +22,6 @@ body {
   border-radius: 15px;
   width: 350px;
   text-align: center;
-  backdrop-filter: blur(10px);
 }
 
 input {
@@ -80,7 +79,7 @@ async function checkFlag() {
   }
 
   try {
-    const res = await fetch("/check", {
+    const res = await fetch("/api/check", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -99,7 +98,7 @@ async function checkFlag() {
     }
 
   } catch (err) {
-    result.innerHTML = "⚠️ Server error. Is backend running?";
+    result.innerHTML = "⚠️ Server error";
     result.style.color = "orange";
   }
 }
